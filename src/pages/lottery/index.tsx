@@ -43,11 +43,10 @@ const LotteryPage = () => {
     <PageWrapper header={lottery.name} title="Take a look at this lottery!">
       <div className="flex flex-col gap-4 text-sm text-gray-600">
         <div>
-          IMPORTANT! By using Cloverland, you acknowledge that you are an adult
-          under the laws of your country and that you have the legal capacity to
-          participate in lotteries. Cloverland does not condone or encourage
-          underage gambling, and we reserve the right to request proof of age
-          and identity from any user.
+          Cloverland offers a secure and transparent platform for lotteries, but
+          we don't take responsibility for any losses. We promote responsible
+          gambling and advise users to comply with applicable laws. Using
+          Cloverland is at your own risk, and you agree to these terms.
         </div>
       </div>
       <div className="flex flex-wrap text-6xl font-black">
@@ -65,28 +64,20 @@ const LotteryPage = () => {
           <div className="flex flex-col gap-4">
             <div className="flex flex-col">
               <div className="flex gap-1">
-                <span className="text font-black">Name:</span>
+                <span className="font-black">Name:</span>
                 {lottery.name}
               </div>
               <div className="flex gap-1">
-                <span className="text font-black">Price:</span>
+                <span className="font-black">Price:</span>
                 {lottery.price} {lottery.symbol}
               </div>
               <div className="flex gap-1">
-                <span className="text font-black">Created at date:</span>
+                <span className="font-black">Created at:</span>
                 {format(new Date(lottery.createdAt), "yyyy-MM-dd")}
               </div>
               <div className="flex gap-1">
-                <span className="text font-black">Created at time:</span>
-                {format(new Date(lottery.createdAt), "p")}
-              </div>
-              <div className="flex gap-1">
-                <span className="text font-black">Ends at date:</span>
+                <span className="font-black">Ends at:</span>
                 {format(new Date(lottery.endsAt), "yyyy-MM-dd")}
-              </div>
-              <div className="flex gap-1">
-                <span className="text font-black">Ends at time:</span>
-                {format(new Date(lottery.endsAt), "p")}
               </div>
             </div>
             <Button onClick={() => navigate(`/lottery/${lotteryId}/pay`)}>

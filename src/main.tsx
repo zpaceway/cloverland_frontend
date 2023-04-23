@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import ReactDOM from "react-dom/client";
 import PayLottery from "./pages/lottery/pay";
 import CustomerPage from "./pages/customer";
@@ -19,10 +19,12 @@ import { useCustomer } from "./hooks";
 import HomePage from "./pages/home";
 import LotteryPage from "./pages/lottery";
 import OrderPage from "./pages/order";
+import Debouncer from "./utils/Debouncer";
 
 const App = () => {
   const { customer, setCustomer, credentials, setCredentials } = useCustomer();
   const [searchParams, setSearchParams] = useSearchParams();
+  const debouncer = useRef(new Debouncer({ delay: 300 }));
 
   const getCustomer = useCallback(() => {
     const customerId = searchParams.get("customerId") || credentials.customerId;
@@ -37,24 +39,34 @@ const App = () => {
       return;
     }
 
-    axios
-      .get(`/api/customer/${customerId}/${customerSecret}/`)
-      .then(({ data }) => {
-        setCredentials({
-          customerId,
-          customerSecret,
-        });
-        searchParams.delete("customerId");
-        searchParams.delete("customerSecret");
-        setSearchParams(new URLSearchParams(searchParams));
-        setCustomer(data);
-      })
-      .catch(() => setCustomer(null));
+    debouncer.current.exec(() => {
+      axios
+        .get(`/api/customer/${customerId}/${customerSecret}/`)
+        .then(({ data }) => {
+          setCredentials({
+            customerId,
+            customerSecret,
+          });
+          setCustomer(data);
+        })
+        .catch(() => setCustomer(null));
+    });
   }, [customer, searchParams, setCustomer]);
 
   useEffect(() => {
     getCustomer();
   }, [setCustomer, getCustomer]);
+
+  useEffect(() => {
+    const customerId = searchParams.get("customerId");
+    const customerSecret = searchParams.get("customerSecret");
+
+    if ((!customerId && !customerSecret) || customer === undefined) return;
+
+    searchParams.delete("customerId");
+    searchParams.delete("customerSecret");
+    setSearchParams(new URLSearchParams(searchParams));
+  }, [customer]);
 
   if (customer === undefined) {
     return <LoadingScreen />;

@@ -92,24 +92,12 @@ const LotteryPayPage = () => {
   return (
     <PageWrapper header={lottery.name} title="Almost there!">
       <div className="flex flex-col gap-4 text-sm text-gray-600">
-        <div>
-          Cloverland provides a secure and transparent platform for users to
-          participate in lotteries, but we do not assume responsibility for any
-          loss or damages resulting from the misuse of our platform. We
-          encourage responsible gambling and advise our users to set a budget
-          and gamble only what they can afford to lose.
-        </div>
-        <div>
-          Please note that the laws and regulations regarding lotteries may vary
-          by country and state, and it is the user's responsibility to ensure
-          that they comply with these laws. Cloverland does not take
-          responsibility for any legal consequences that may arise from the use
-          of our platform.
-        </div>
-        <div>
-          By using Cloverland, you agree to these terms and acknowledge that the
-          use of our platform is at your own risk.
-        </div>
+        By purchasing a lottery ticket on Cloverland, you acknowledge and agree
+        to the terms and conditions outlined by the platform. This includes
+        accepting responsibility for any risks or consequences that may arise
+        from using the platform, as well as complying with all relevant laws and
+        regulations. Please gamble responsibly and only spend what you can
+        afford to lose.
       </div>
       <div className="flex w-full flex-wrap-reverse gap-4 sm:flex-nowrap">
         <form
