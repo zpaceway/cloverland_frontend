@@ -99,11 +99,11 @@ const router = createBrowserRouter([
         path: "/customer",
         element: <CustomerPage />,
       },
+      {
+        path: "/auth",
+        element: <AuthPage />,
+      },
     ],
-  },
-  {
-    path: "/auth",
-    element: <AuthPage />,
   },
   {
     path: "*",

@@ -3,15 +3,15 @@ import { useCustomer } from "../hooks";
 import { useNavigate } from "react-router-dom";
 
 type TopBarProps = {
-  subtitle: string;
+  header: string;
 };
 
-const TopBar = ({ subtitle }: TopBarProps) => {
+const TopBar = ({ header }: TopBarProps) => {
   const { customer } = useCustomer();
   const navigate = useNavigate();
 
   return (
-    <div className="flex w-full items-center justify-center bg-white p-4 shadow-md">
+    <div className="z-50 flex w-full items-center justify-center bg-white p-4 shadow-md">
       <div className="flex w-full max-w-4xl items-center justify-between">
         <div
           className="flex cursor-pointer items-center gap-4"
@@ -20,7 +20,7 @@ const TopBar = ({ subtitle }: TopBarProps) => {
           <img src="/logo.png" className="h-12 w-12 rounded-full" alt="" />
           <div className="flex flex-col text-sm">
             <div className="font-medium">Cloverland</div>
-            <div className="text-gray-600">{subtitle}</div>
+            <div className="text-gray-600">{header}</div>
           </div>
         </div>
         <div>

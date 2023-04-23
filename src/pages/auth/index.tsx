@@ -6,6 +6,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "react-toastify";
 import axios from "../../lib/axios";
+import PageWrapper from "../../components/shared/PageWrapper";
 
 const authFormSchema = z.object({
   email: z.string().email("Please, input a valid email."),
@@ -39,28 +40,25 @@ const AuthPage = () => {
   };
 
   return (
-    <div className="fixed inset-0 flex flex-col items-center bg-gray-100">
-      <TopBar subtitle="Auth" />
-      <div className="grid h-full w-full place-items-center overflow-y-auto p-4">
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="flex max-w-xs flex-col gap-4"
-        >
-          <div>
-            Please, enter your email down bellow and we will send you a magic
-            link to login.
-          </div>
-          <TextField
-            type="email"
-            errorMessage={errors.email?.message}
-            {...register("email")}
-          />
-          <Button type="submit" loading={isSubmitting}>
-            Send
-          </Button>
-        </form>
-      </div>
-    </div>
+    <PageWrapper header="Auth" title="Magic link authentication">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex max-w-xs flex-col gap-4"
+      >
+        <div>
+          Please, enter your email down bellow and we will send you a magic link
+          to login.
+        </div>
+        <TextField
+          type="email"
+          errorMessage={errors.email?.message}
+          {...register("email")}
+        />
+        <Button type="submit" loading={isSubmitting}>
+          Send
+        </Button>
+      </form>
+    </PageWrapper>
   );
 };
 
