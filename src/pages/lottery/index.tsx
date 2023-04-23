@@ -7,6 +7,7 @@ import Lottery from "../../types/Lottery";
 import { format } from "date-fns";
 import TopBar from "../../components/TopBar";
 import axios from "../../lib/axios";
+import PageWrapper from "../../components/shared/PageWrapper";
 
 const backendBaseUrl = import.meta.env.VITE_BACKEND_BASE_URL;
 
@@ -46,58 +47,53 @@ const LotteryPage = () => {
   }
 
   return (
-    <div className="fixed inset-0 flex flex-col items-center bg-gray-100">
-      <TopBar subtitle={lottery.name} />
-      <div className="grid h-full w-full place-items-center overflow-y-auto p-4">
-        <div className="flex w-full max-w-4xl flex-col gap-4">
-          <div className="flex flex-wrap text-6xl font-black">
-            <div className="bg-black p-2 text-white">{lottery.name}</div>
-            <div className="p-2"> Lottery</div>
-          </div>
-          <div className="flex flex-wrap gap-8">
-            <div
-              dangerouslySetInnerHTML={{
-                __html: lottery.description,
-              }}
-              className="w-full max-w-full border border-gray-300 bg-white p-4 sm:max-w-md"
-            ></div>
-            <div className="flex w-full flex-col sm:w-auto">
-              <div className="flex flex-col gap-4">
-                <div className="flex flex-col">
-                  <div className="flex gap-1">
-                    <span className="text font-black">Name:</span>
-                    {lottery.name}
-                  </div>
-                  <div className="flex gap-1">
-                    <span className="text font-black">Price:</span>
-                    {lottery.price} {lottery.symbol}
-                  </div>
-                  <div className="flex gap-1">
-                    <span className="text font-black">Created at date:</span>
-                    {format(new Date(lottery.createdAt), "yyyy-MM-dd")}
-                  </div>
-                  <div className="flex gap-1">
-                    <span className="text font-black">Created at time:</span>
-                    {format(new Date(lottery.createdAt), "p")}
-                  </div>
-                  <div className="flex gap-1">
-                    <span className="text font-black">Ends at date:</span>
-                    {format(new Date(lottery.endsAt), "yyyy-MM-dd")}
-                  </div>
-                  <div className="flex gap-1">
-                    <span className="text font-black">Ends at time:</span>
-                    {format(new Date(lottery.endsAt), "p")}
-                  </div>
-                </div>
-                <Button onClick={() => navigate(`/lottery/${lotteryId}/pay`)}>
-                  Buy ticket
-                </Button>
+    <PageWrapper header={lottery.name} title="Take a look at this lottery!">
+      <div className="flex flex-wrap text-6xl font-black">
+        <div className="bg-black p-2 text-white">{lottery.name}</div>
+        <div className="p-2"> Lottery</div>
+      </div>
+      <div className="flex flex-wrap gap-8">
+        <div
+          dangerouslySetInnerHTML={{
+            __html: lottery.description,
+          }}
+          className="w-full max-w-full border border-gray-300 bg-white p-4 sm:max-w-md"
+        ></div>
+        <div className="flex w-full flex-col sm:w-auto">
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-col">
+              <div className="flex gap-1">
+                <span className="text font-black">Name:</span>
+                {lottery.name}
+              </div>
+              <div className="flex gap-1">
+                <span className="text font-black">Price:</span>
+                {lottery.price} {lottery.symbol}
+              </div>
+              <div className="flex gap-1">
+                <span className="text font-black">Created at date:</span>
+                {format(new Date(lottery.createdAt), "yyyy-MM-dd")}
+              </div>
+              <div className="flex gap-1">
+                <span className="text font-black">Created at time:</span>
+                {format(new Date(lottery.createdAt), "p")}
+              </div>
+              <div className="flex gap-1">
+                <span className="text font-black">Ends at date:</span>
+                {format(new Date(lottery.endsAt), "yyyy-MM-dd")}
+              </div>
+              <div className="flex gap-1">
+                <span className="text font-black">Ends at time:</span>
+                {format(new Date(lottery.endsAt), "p")}
               </div>
             </div>
+            <Button onClick={() => navigate(`/lottery/${lotteryId}/pay`)}>
+              Buy ticket
+            </Button>
           </div>
         </div>
       </div>
-    </div>
+    </PageWrapper>
   );
 };
 
