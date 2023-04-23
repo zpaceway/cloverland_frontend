@@ -31,12 +31,12 @@ const checkoutSchema = z.object({
 
 type CheckoutSchemaType = z.infer<typeof checkoutSchema>;
 
-type LotteryAppParams = {
+type LotteryPayPageParams = {
   lotteryId: string;
 };
 
-const LotteryApp = () => {
-  const { lotteryId } = useParams<LotteryAppParams>();
+const LotteryPayPage = () => {
+  const { lotteryId } = useParams<LotteryPayPageParams>();
   const navigate = useNavigate();
   const [lottery, setLottery] = useState<Lottery | undefined | null>(undefined);
 
@@ -564,4 +564,4 @@ const LotteryApp = () => {
   );
 };
 
-export default LotteryApp;
+export default LotteryPayPage;

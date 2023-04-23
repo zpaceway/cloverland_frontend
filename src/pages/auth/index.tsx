@@ -13,7 +13,7 @@ const authFormSchema = z.object({
 
 type AuthFormSchemaType = z.infer<typeof authFormSchema>;
 
-const Auth = () => {
+const AuthPage = () => {
   const {
     register,
     handleSubmit,
@@ -64,4 +64,4 @@ const Auth = () => {
   );
 };
 
-export default Auth;
+export default AuthPage;

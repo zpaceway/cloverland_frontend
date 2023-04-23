@@ -1,53 +1,63 @@
 import React, { useCallback, useEffect } from "react";
 import ReactDOM from "react-dom/client";
-import Lottery from "./pages/lottery";
 import PayLottery from "./pages/lottery/pay";
-import Order from "./pages/order";
-import Customer from "./pages/customer";
+import CustomerPage from "./pages/customer";
 import {
   createBrowserRouter,
   Outlet,
   RouterProvider,
-  useParams,
+  useSearchParams,
 } from "react-router-dom";
-import { customerAtom } from "./atoms";
-import { useAtom } from "jotai";
 import LoadingScreen from "./components/LoadingScreen";
-import Auth from "./pages/auth";
+import AuthPage from "./pages/auth";
 import NotFound from "./components/NotFound";
 import "react-toastify/dist/ReactToastify.css";
 import "./index.scss";
 import { ToastContainer } from "react-toastify";
 import axios from "./lib/axios";
-
-const backendBaseUrl = import.meta.env.VITE_BACKEND_BASE_URL;
-
-type CustomerParams = {
-  customerId: string;
-  customerSecret: string;
-};
+import { useCustomer } from "./hooks";
+import HomePage from "./pages/home";
+import LotteryPage from "./pages/lottery";
+import OrderPage from "./pages/order";
 
 const App = () => {
-  const [customer, setCustomer] = useAtom(customerAtom);
-
-  const { customerId, customerSecret } = useParams<CustomerParams>();
+  const { customer, setCustomer, credentials, setCredentials } = useCustomer();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const getCustomer = useCallback(() => {
+    const customerId = searchParams.get("customerId") || credentials.customerId;
+    const customerSecret =
+      searchParams.get("customerSecret") || credentials.customerSecret;
+
+    if (!customerId || !customerSecret) {
+      return customer === undefined && setCustomer(null);
+    }
+
+    if (customer && customer.id === customerId) {
+      return;
+    }
+
     axios
-      .get(`${backendBaseUrl}/api/customer`, {
+      .get("/api/customer", {
         params: {
           id: customerId,
           secret: customerSecret,
         },
       })
       .then(({ data }) => {
+        setCredentials({
+          customerId,
+          customerSecret,
+        });
+        searchParams.delete("customerId");
+        searchParams.delete("customerSecret");
+        setSearchParams(new URLSearchParams(searchParams));
         setCustomer(data);
       })
       .catch(() => setCustomer(null));
-  }, [customerId, customerSecret, setCustomer]);
+  }, [customer, searchParams, setCustomer]);
 
   useEffect(() => {
-    setCustomer(undefined);
     getCustomer();
   }, [setCustomer, getCustomer]);
 
@@ -64,12 +74,16 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       {
+        path: "",
+        element: <HomePage />,
+      },
+      {
         path: "/lottery/:lotteryId",
         element: <Outlet />,
         children: [
           {
             path: "",
-            element: <Lottery />,
+            element: <LotteryPage />,
           },
           {
             path: "pay",
@@ -79,17 +93,17 @@ const router = createBrowserRouter([
       },
       {
         path: "/order/:orderId",
-        element: <Order />,
+        element: <OrderPage />,
       },
       {
-        path: "/customer/:customerSecret/:customerId",
-        element: <Customer />,
+        path: "/customer",
+        element: <CustomerPage />,
       },
     ],
   },
   {
     path: "/auth",
-    element: <Auth />,
+    element: <AuthPage />,
   },
   {
     path: "*",

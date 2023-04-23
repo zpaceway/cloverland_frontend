@@ -2,17 +2,29 @@ import { CgSpinner } from "react-icons/cg";
 
 type ButtonProps = {
   loading?: boolean;
+  color?: ButtonColor;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
+
+const buttonColorsMapping = {
+  primary: "bg-green-500",
+  secondary: "bg-blue-500",
+  error: "bg-red-500",
+};
+
+type ButtonColor = keyof typeof buttonColorsMapping;
 
 const Button = ({
   children,
   disabled,
   loading = false,
+  color = "primary",
   ...rest
 }: ButtonProps) => {
   return (
     <button
-      className={`bg-green-500 px-6 py-4 text-base text-white outline-none hover:brightness-95 active:brightness-90 ${
+      className={`${
+        buttonColorsMapping[color]
+      } px-6 py-4 text-base text-white outline-none hover:brightness-95 active:brightness-90 ${
         disabled ? "opacity-50" : "opacity-100"
       }`}
       disabled={disabled}

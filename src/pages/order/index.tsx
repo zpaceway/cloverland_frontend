@@ -9,13 +9,13 @@ import axios from "../../lib/axios";
 
 const backendBaseUrl = import.meta.env.VITE_BACKEND_BASE_URL;
 
-type OrderAppParams = {
+type OrderPageParams = {
   orderId: string;
 };
 
-const OrderApp = () => {
+const OrderPage = () => {
   const [order, setOrder] = useState<Order | null | undefined>(undefined);
-  const { orderId } = useParams<OrderAppParams>();
+  const { orderId } = useParams<OrderPageParams>();
   const navigate = useNavigate();
   const [isValidating, setIsValidating] = useState(false);
 
@@ -118,4 +118,4 @@ const OrderApp = () => {
   );
 };
 
-export default OrderApp;
+export default OrderPage;

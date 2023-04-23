@@ -10,14 +10,14 @@ import axios from "../../lib/axios";
 
 const backendBaseUrl = import.meta.env.VITE_BACKEND_BASE_URL;
 
-type LotteryAppParams = {
+type LotteryPageParams = {
   lotteryId: string;
 };
 
-const LotteryApp = () => {
-  const { lotteryId } = useParams<LotteryAppParams>();
+const LotteryPage = () => {
+  const { lotteryId } = useParams<LotteryPageParams>();
   const navigate = useNavigate();
-  const [lottery, setLottery] = useState<Lottery | undefined | null>();
+  const [lottery, setLottery] = useState<Lottery | undefined | null>(undefined);
 
   const getLottery = useCallback(() => {
     axios
@@ -101,4 +101,4 @@ const LotteryApp = () => {
   );
 };
 
-export default LotteryApp;
+export default LotteryPage;

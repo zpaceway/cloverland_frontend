@@ -1,13 +1,12 @@
 import TopBar from "../../components/TopBar";
-import { useAtom } from "jotai";
-import { customerAtom } from "../../atoms";
-import NotFound from "../../components/NotFound";
+import AuthPage from "../auth";
+import { useCustomer } from "../../hooks";
 
-const CustomerApp = () => {
-  const [customer] = useAtom(customerAtom);
+const CustomerPage = () => {
+  const { customer } = useCustomer();
 
   if (!customer) {
-    return <NotFound />;
+    return <AuthPage />;
   }
 
   return (
@@ -19,7 +18,7 @@ const CustomerApp = () => {
             <img src="/user-circle.svg" className="h-full w-full" alt="" />
           </div>
         </div>
-        <div className="flex w-full flex-col p-4">
+        <div className="mt-8 flex w-full flex-col p-8">
           <div className="flex flex-col">
             <div className="w-full text-center text-2xl font-black">
               {`${customer.fullName}`.trim()}
@@ -32,4 +31,4 @@ const CustomerApp = () => {
   );
 };
 
-export default CustomerApp;
+export default CustomerPage;

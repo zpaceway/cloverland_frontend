@@ -2,9 +2,23 @@ import { CgSpinner } from "react-icons/cg";
 
 type LinkProps = {
   loading?: boolean;
+  color?: LinkColor;
 } & React.AnchorHTMLAttributes<HTMLAnchorElement>;
 
-const Button = ({ children, loading = false, ...rest }: LinkProps) => {
+const linkColorsMapping = {
+  primary: "bg-green-500",
+  secondary: "bg-blue-500",
+  error: "bg-red-500",
+};
+
+type LinkColor = keyof typeof linkColorsMapping;
+
+const Button = ({
+  children,
+  loading = false,
+  color = "primary",
+  ...rest
+}: LinkProps) => {
   return (
     <a
       className="block bg-green-500 px-6 py-4 text-base text-white outline-none hover:brightness-95 active:brightness-90"
