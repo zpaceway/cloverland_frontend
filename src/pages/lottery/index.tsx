@@ -47,7 +47,7 @@ const LotteryPage = () => {
         gambling and advise users to comply with applicable laws. Using
         Cloverland is at your own risk, and you agree to these terms.
       </div>
-      <div className="flex flex-wrap text-6xl font-black">
+      <div className="mb-8 flex flex-wrap text-6xl font-black">
         <div className="bg-black p-2 text-white">{lottery.name}</div>
         <div className="p-2"> Lottery</div>
       </div>
