@@ -1,42 +1,36 @@
-import Radio from "../../components/shared/Radio";
-import Select from "../../components/shared/Select";
-import TextField from "../../components/shared/TextField";
-import { AiOutlineShoppingCart } from "react-icons/ai";
-import { GrBitcoin } from "react-icons/gr";
-import { FaEthereum } from "react-icons/fa";
 import { useCallback, useEffect, useState } from "react";
 import Button from "../../components/shared/Button";
 import LoadingScreen from "../../components/LoadingScreen";
-import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import NotFound from "../../components/NotFound";
 import Lottery from "../../types/Lottery";
 import { format } from "date-fns";
+import TopBar from "../../components/TopBar";
+import axios from "../../lib/axios";
 
 const backendBaseUrl = import.meta.env.VITE_BACKEND_BASE_URL;
 
 type LotteryAppParams = {
-  id: string;
+  lotteryId: string;
 };
 
 const LotteryApp = () => {
-  const { id } = useParams<LotteryAppParams>();
+  const { lotteryId } = useParams<LotteryAppParams>();
   const navigate = useNavigate();
-  const [lottery, setLottery] = useState<Lottery | undefined | null>(undefined);
+  const [lottery, setLottery] = useState<Lottery | undefined | null>();
 
   const getLottery = useCallback(() => {
     axios
       .get(`${backendBaseUrl}/api/lottery`, {
         params: {
-          lotteryId: id,
+          lotteryId,
         },
-        withCredentials: true,
       })
       .then(({ data }) => {
         setLottery(data);
       })
       .catch(() => setLottery(null));
-  }, [id, setLottery]);
+  }, [lotteryId, setLottery]);
 
   useEffect(() => {
     setLottery(undefined);
@@ -47,21 +41,13 @@ const LotteryApp = () => {
     return <LoadingScreen />;
   }
 
-  if (id === undefined || lottery === null) {
+  if (lotteryId === undefined || lottery === null) {
     return <NotFound />;
   }
 
   return (
     <div className="fixed inset-0 flex flex-col items-center bg-gray-100">
-      <div className="flex w-full justify-center bg-white p-4">
-        <div className="flex w-full max-w-4xl items-center gap-4">
-          <img src="/logo.png" className="h-12 w-12 rounded-full" alt="" />
-          <div className="flex flex-col text-sm">
-            <div className="font-medium">Cloverland</div>
-            <div className="text-gray-600">{lottery.name}</div>
-          </div>
-        </div>
-      </div>
+      <TopBar subtitle={lottery.name} />
       <div className="grid h-full w-full place-items-center overflow-y-auto p-4">
         <div className="flex w-full max-w-4xl flex-col gap-4">
           <div className="flex flex-wrap text-6xl font-black">
@@ -103,7 +89,7 @@ const LotteryApp = () => {
                     {format(new Date(lottery.endsAt), "p")}
                   </div>
                 </div>
-                <Button onClick={() => navigate(`/lottery/${id}/pay`)}>
+                <Button onClick={() => navigate(`/lottery/${lotteryId}/pay`)}>
                   Buy ticket
                 </Button>
               </div>

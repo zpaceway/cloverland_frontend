@@ -1,5 +1,15 @@
 type Customer = {
+  id: string;
+  firstName: string;
+  lastName: string;
+  fullName: string;
   email: string;
+  phone: string;
+  country: string;
+  state: string;
+  zipCode: string;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export default Customer;

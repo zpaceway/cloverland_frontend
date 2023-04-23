@@ -6,15 +6,16 @@ import { GrBitcoin } from "react-icons/gr";
 import { FaEthereum } from "react-icons/fa";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
 import { useCallback, useEffect, useState } from "react";
 import Button from "../../components/shared/Button";
 import LoadingScreen from "../../components/LoadingScreen";
-import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import NotFound from "../../components/NotFound";
 import Lottery from "../../types/Lottery";
 import cookie from "cookie";
+import { z } from "zod";
+import TopBar from "../../components/TopBar";
+import axios from "../../lib/axios";
 
 const backendBaseUrl = import.meta.env.VITE_BACKEND_BASE_URL;
 
@@ -31,11 +32,11 @@ const checkoutSchema = z.object({
 type CheckoutSchemaType = z.infer<typeof checkoutSchema>;
 
 type LotteryAppParams = {
-  id: string;
+  lotteryId: string;
 };
 
 const LotteryApp = () => {
-  const { id } = useParams<LotteryAppParams>();
+  const { lotteryId } = useParams<LotteryAppParams>();
   const navigate = useNavigate();
   const [lottery, setLottery] = useState<Lottery | undefined | null>(undefined);
 
@@ -43,15 +44,14 @@ const LotteryApp = () => {
     axios
       .get(`${backendBaseUrl}/api/lottery`, {
         params: {
-          lotteryId: id,
+          lotteryId,
         },
-        withCredentials: true,
       })
       .then(({ data }) => {
         setLottery(data);
       })
       .catch(() => setLottery(null));
-  }, [id, setLottery]);
+  }, [lotteryId, setLottery]);
 
   const {
     register,
@@ -76,18 +76,14 @@ const LotteryApp = () => {
         `${backendBaseUrl}/api/order`,
         data,
         {
-          withCredentials: true,
           params: {
-            lotteryId: id,
-          },
-          headers: {
-            "X-CSRFToken": cookie.parse(document.cookie).csrftoken,
+            lotteryId,
           },
         }
       );
       navigate(`/order/${order.id}`);
     },
-    [id]
+    [lotteryId]
   );
 
   useEffect(() => {
@@ -99,21 +95,13 @@ const LotteryApp = () => {
     return <LoadingScreen />;
   }
 
-  if (id === undefined || lottery === null) {
+  if (lotteryId === undefined || lottery === null) {
     return <NotFound />;
   }
 
   return (
     <div className="fixed inset-0 flex flex-col items-center bg-gray-100">
-      <div className="flex w-full justify-center bg-white p-4">
-        <div className="flex w-full max-w-4xl items-center gap-4">
-          <img src="/logo.png" className="h-12 w-12 rounded-full" alt="" />
-          <div className="flex flex-col text-sm">
-            <div className="font-medium">Cloverland</div>
-            <div className="text-gray-600">Checkout</div>
-          </div>
-        </div>
-      </div>
+      <TopBar subtitle="Checkout" />
       <div className="grid h-full w-full overflow-y-auto">
         <div className="flex h-full w-full flex-col items-center justify-center">
           <div className="flex w-full max-w-4xl">
