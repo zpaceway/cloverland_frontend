@@ -11,7 +11,7 @@ const CustomerPage = () => {
   }
 
   return (
-    <PageWrapper header="Auth" title={`Welcome, ${customer.fullName}`}>
+    <PageWrapper header="Profile" title={`Welcome, ${customer.fullName}`}>
       <div className="flex w-full max-w-4xl flex-col">
         <div className="relative h-56 w-full bg-gradient-to-r from-green-400 to-emerald-400">
           <div className="absolute left-4 top-[calc(100%_-_4rem)] h-32 w-32 rounded-full bg-white">

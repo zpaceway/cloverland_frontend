@@ -5,11 +5,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import NotFound from "../../components/NotFound";
 import Lottery from "../../types/Lottery";
 import { format } from "date-fns";
-import TopBar from "../../components/TopBar";
 import axios from "../../lib/axios";
 import PageWrapper from "../../components/shared/PageWrapper";
-
-const backendBaseUrl = import.meta.env.VITE_BACKEND_BASE_URL;
 
 type LotteryPageParams = {
   lotteryId: string;
@@ -22,11 +19,7 @@ const LotteryPage = () => {
 
   const getLottery = useCallback(() => {
     axios
-      .get(`${backendBaseUrl}/api/lottery`, {
-        params: {
-          lotteryId,
-        },
-      })
+      .get(`/api/lottery/${lotteryId}/`)
       .then(({ data }) => {
         setLottery(data);
       })

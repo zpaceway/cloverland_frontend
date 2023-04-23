@@ -16,8 +16,6 @@ import { z } from "zod";
 import axios from "../../lib/axios";
 import PageWrapper from "../../components/shared/PageWrapper";
 
-const backendBaseUrl = import.meta.env.VITE_BACKEND_BASE_URL;
-
 const checkoutSchema = z.object({
   firstName: z.string().min(1, { message: "Please, input your first name." }),
   lastName: z.string().min(1, { message: "Please, input your last name." }),
@@ -41,11 +39,7 @@ const LotteryPayPage = () => {
 
   const getLottery = useCallback(() => {
     axios
-      .get(`${backendBaseUrl}/api/lottery`, {
-        params: {
-          lotteryId,
-        },
-      })
+      .get(`/api/lottery/${lotteryId}/`)
       .then(({ data }) => {
         setLottery(data);
       })
@@ -71,15 +65,10 @@ const LotteryPayPage = () => {
 
   const onSubmit: SubmitHandler<CheckoutSchemaType> = useCallback(
     async (data) => {
-      const { data: order } = await axios.post(
-        `${backendBaseUrl}/api/order`,
-        data,
-        {
-          params: {
-            lotteryId,
-          },
-        }
-      );
+      const { data: order } = await axios.post(`/api/order`, {
+        lotteryId,
+        customer: data,
+      });
       navigate(`/order/${order.id}`);
     },
     [lotteryId]

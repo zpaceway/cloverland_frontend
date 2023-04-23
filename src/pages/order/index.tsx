@@ -9,8 +9,6 @@ import axios from "../../lib/axios";
 import { toast } from "react-toastify";
 import PageWrapper from "../../components/shared/PageWrapper";
 
-const backendBaseUrl = import.meta.env.VITE_BACKEND_BASE_URL;
-
 type OrderPageParams = {
   orderId: string;
 };
@@ -23,11 +21,7 @@ const OrderPage = () => {
 
   const getOrder = useCallback(() => {
     axios
-      .get(`${backendBaseUrl}/api/order`, {
-        params: {
-          orderId,
-        },
-      })
+      .get(`/api/order/${orderId}`)
       .then(({ data }) => {
         setOrder(data);
       })
@@ -90,11 +84,7 @@ const OrderPage = () => {
                 onClick={() => {
                   setIsValidating(true);
                   axios
-                    .get(`${backendBaseUrl}/api/order`, {
-                      params: {
-                        orderId: order.id,
-                      },
-                    })
+                    .get(`/api/order/${order.id}`)
                     .then(({ data }) => {
                       if (!data.paid) {
                         return toast.error(
