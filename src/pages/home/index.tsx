@@ -21,7 +21,7 @@ const HomePage = () => {
 
   return (
     <PageWrapper header="Home" title="Welcome to cloverland!">
-      <div className="flex flex-col gap-4 text-sm text-gray-600">
+      <div className="mb-8 flex flex-col gap-4 text-sm text-gray-600">
         Cloverland is a blockchain lottery app that offers a secure and
         transparent platform for users to participate in lotteries. Transactions
         are recorded on the blockchain network, ensuring a fair process.

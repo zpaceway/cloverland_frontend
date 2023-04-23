@@ -91,7 +91,7 @@ const LotteryPayPage = () => {
 
   return (
     <PageWrapper header={lottery.name} title="Almost there!">
-      <div className="flex flex-col gap-4 text-sm text-gray-600">
+      <div className="mb-8 flex flex-col gap-4 text-sm text-gray-600">
         By purchasing a lottery ticket on Cloverland, you acknowledge and agree
         to the terms and conditions outlined by the platform. This includes
         accepting responsibility for any risks or consequences that may arise

@@ -41,13 +41,11 @@ const LotteryPage = () => {
 
   return (
     <PageWrapper header={lottery.name} title="Take a look at this lottery!">
-      <div className="flex flex-col gap-4 text-sm text-gray-600">
-        <div>
-          Cloverland offers a secure and transparent platform for lotteries, but
-          we don't take responsibility for any losses. We promote responsible
-          gambling and advise users to comply with applicable laws. Using
-          Cloverland is at your own risk, and you agree to these terms.
-        </div>
+      <div className="mb-8 flex flex-col gap-4 text-sm text-gray-600">
+        Cloverland offers a secure and transparent platform for lotteries, but
+        we don't take responsibility for any losses. We promote responsible
+        gambling and advise users to comply with applicable laws. Using
+        Cloverland is at your own risk, and you agree to these terms.
       </div>
       <div className="flex flex-wrap text-6xl font-black">
         <div className="bg-black p-2 text-white">{lottery.name}</div>
