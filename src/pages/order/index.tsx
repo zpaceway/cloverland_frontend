@@ -4,7 +4,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import NotFound from "../../components/NotFound";
 import Order from "../../types/Order";
 import Button from "../../components/shared/Button";
-import TopBar from "../../components/TopBar";
 import axios from "../../lib/axios";
 import { toast } from "react-toastify";
 import PageWrapper from "../../components/shared/PageWrapper";

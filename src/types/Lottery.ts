@@ -8,6 +8,7 @@ type Lottery = {
   endsAt: string;
   createdAt: string;
   updatedAt: string;
+  walletAddressLink: string;
 };
 
 export default Lottery;

@@ -22,7 +22,7 @@ const AppLink = ({
 }: LinkAppProps) => {
   return (
     <Link
-      className="block bg-green-500 px-6 py-4 text-base text-white outline-none hover:brightness-95 active:brightness-90"
+      className="block bg-green-500 px-6 py-3 text-base text-white outline-none hover:brightness-95 active:brightness-90"
       {...rest}
     >
       <div className="relative">

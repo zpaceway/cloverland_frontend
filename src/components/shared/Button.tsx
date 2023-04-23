@@ -24,7 +24,7 @@ const Button = ({
     <button
       className={`${
         buttonColorsMapping[color]
-      } px-6 py-4 text-base text-white outline-none hover:brightness-95 active:brightness-90 ${
+      } px-6 py-3 text-base text-white outline-none hover:brightness-95 active:brightness-90 ${
         disabled ? "opacity-50" : "opacity-100"
       }`}
       disabled={disabled}

@@ -1,3 +1,5 @@
+import Order from "./Order";
+
 type Customer = {
   id: string;
   firstName: string;
@@ -10,6 +12,7 @@ type Customer = {
   zipCode: string;
   createdAt: string;
   updatedAt: string;
+  orders: Order[];
 };
 
 export default Customer;
