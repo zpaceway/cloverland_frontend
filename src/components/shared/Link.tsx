@@ -1,9 +1,10 @@
 import { CgSpinner } from "react-icons/cg";
+import { Link, LinkProps } from "react-router-dom";
 
-type LinkProps = {
+type LinkAppProps = {
   loading?: boolean;
   color?: LinkColor;
-} & React.AnchorHTMLAttributes<HTMLAnchorElement>;
+} & LinkProps;
 
 const linkColorsMapping = {
   primary: "bg-green-500",
@@ -13,14 +14,14 @@ const linkColorsMapping = {
 
 type LinkColor = keyof typeof linkColorsMapping;
 
-const Button = ({
+const AppLink = ({
   children,
   loading = false,
   color = "primary",
   ...rest
-}: LinkProps) => {
+}: LinkAppProps) => {
   return (
-    <a
+    <Link
       className="block bg-green-500 px-6 py-4 text-base text-white outline-none hover:brightness-95 active:brightness-90"
       {...rest}
     >
@@ -34,8 +35,8 @@ const Button = ({
           </div>
         )}
       </div>
-    </a>
+    </Link>
   );
 };
 
-export default Button;
+export default AppLink;

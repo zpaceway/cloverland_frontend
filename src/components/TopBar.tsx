@@ -1,6 +1,6 @@
 import Link from "./shared/Link";
-import Button from "./shared/Button";
 import { useCustomer } from "../hooks";
+import { useNavigate } from "react-router-dom";
 
 type TopBarProps = {
   subtitle: string;
@@ -8,30 +8,34 @@ type TopBarProps = {
 
 const TopBar = ({ subtitle }: TopBarProps) => {
   const { customer } = useCustomer();
+  const navigate = useNavigate();
 
   return (
     <div className="flex w-full items-center justify-center bg-white p-4 shadow-md">
       <div className="flex w-full max-w-4xl items-center justify-between">
-        <a className="flex cursor-pointer items-center gap-4" href="/">
+        <div
+          className="flex cursor-pointer items-center gap-4"
+          onClick={() => navigate("/")}
+        >
           <img src="/logo.png" className="h-12 w-12 rounded-full" alt="" />
           <div className="flex flex-col text-sm">
             <div className="font-medium">Cloverland</div>
             <div className="text-gray-600">{subtitle}</div>
           </div>
-        </a>
+        </div>
         <div>
           {customer ? (
-            <a
-              href="/customer"
-              className="block h-12 w-12 overflow-hidden rounded-full"
+            <div
+              className="h-12 w-12 cursor-pointer overflow-hidden rounded-full"
+              onClick={() => navigate("/customer")}
             >
               <img
                 src="/user-circle.svg"
                 className="h-full w-full object-contain"
               />
-            </a>
+            </div>
           ) : (
-            <Link href="/auth">Sign in</Link>
+            <Link to="/auth">Sign in</Link>
           )}
         </div>
       </div>

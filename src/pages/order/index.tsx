@@ -6,6 +6,7 @@ import Order from "../../types/Order";
 import Button from "../../components/shared/Button";
 import TopBar from "../../components/TopBar";
 import axios from "../../lib/axios";
+import { toast } from "react-toastify";
 
 const backendBaseUrl = import.meta.env.VITE_BACKEND_BASE_URL;
 
@@ -77,15 +78,14 @@ const OrderPage = () => {
                     is the same as your order id, we wish you the best and
                     really hope you are the winner of the prize! There's nothing
                     else to do here, if you want another ticket you can click{" "}
-                    <a
-                      href=""
+                    <span
                       className="text-blue-500"
                       onClick={() =>
                         navigate(`/lottery/${order.lottery.id}/pay`)
                       }
                     >
                       here
-                    </a>
+                    </span>
                     .
                   </div>
                 )}
@@ -99,9 +99,16 @@ const OrderPage = () => {
                         },
                       })
                       .then(({ data }) => {
+                        if (!data.paid) {
+                          return toast.error(
+                            "We were not able to validate your order yet. Please verify you transfer the right amount of coins to the address provided before clicking on validate."
+                          );
+                        }
+                        return toast.success(
+                          "Order validated successfully, you will receive an email with the confirmation."
+                        );
                         setOrder(data);
                       })
-                      .catch(() => {})
                       .finally(() => setIsValidating(false));
                   }}
                   disabled={order.paid}
