@@ -28,7 +28,7 @@ const AuthPage = () => {
 
   const onSubmit: SubmitHandler<AuthFormSchemaType> = async ({ email }) => {
     await axios
-      .post("/api/auth", {
+      .post("/api/auth/", {
         email,
       })
       .then(() =>

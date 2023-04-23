@@ -65,9 +65,9 @@ const LotteryPayPage = () => {
 
   const onSubmit: SubmitHandler<CheckoutSchemaType> = useCallback(
     async (data) => {
-      const { data: order } = await axios.post(`/api/order`, {
+      const { data: order } = await axios.post(`/api/order/`, {
         lotteryId,
-        customer: data,
+        customerInfo: data,
       });
       navigate(`/order/${order.id}`);
     },

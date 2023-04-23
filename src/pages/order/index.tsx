@@ -21,7 +21,7 @@ const OrderPage = () => {
 
   const getOrder = useCallback(() => {
     axios
-      .get(`/api/order/${orderId}`)
+      .get(`/api/order/${orderId}/`)
       .then(({ data }) => {
         setOrder(data);
       })
@@ -84,7 +84,7 @@ const OrderPage = () => {
                 onClick={() => {
                   setIsValidating(true);
                   axios
-                    .get(`/api/order/${order.id}`)
+                    .get(`/api/order/${order.id}/`)
                     .then(({ data }) => {
                       if (!data.paid) {
                         return toast.error(

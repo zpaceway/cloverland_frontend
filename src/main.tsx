@@ -38,7 +38,7 @@ const App = () => {
     }
 
     axios
-      .get(`/api/customer/${customerId}/${customerSecret}`)
+      .get(`/api/customer/${customerId}/${customerSecret}/`)
       .then(({ data }) => {
         setCredentials({
           customerId,
