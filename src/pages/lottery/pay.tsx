@@ -10,11 +10,12 @@ import { useCallback, useEffect, useState } from "react";
 import Button from "../../components/shared/Button";
 import LoadingScreen from "../../components/LoadingScreen";
 import { useNavigate, useParams } from "react-router-dom";
-import NotFound from "../../components/NotFound";
+import NotFoundPage from "../not-found/NotFound";
 import Lottery from "../../types/Lottery";
 import { z } from "zod";
 import axios from "../../lib/axios";
 import PageWrapper from "../../components/shared/PageWrapper";
+import { useCustomer } from "../../hooks";
 
 const checkoutSchema = z.object({
   firstName: z.string().min(1, { message: "Please, input your first name." }),
@@ -35,6 +36,7 @@ type LotteryPayPageParams = {
 const LotteryPayPage = () => {
   const { lotteryId } = useParams<LotteryPayPageParams>();
   const navigate = useNavigate();
+  const { customer } = useCustomer();
   const [lottery, setLottery] = useState<Lottery | undefined | null>(undefined);
 
   const getLottery = useCallback(() => {
@@ -53,13 +55,13 @@ const LotteryPayPage = () => {
   } = useForm<CheckoutSchemaType>({
     resolver: zodResolver(checkoutSchema),
     defaultValues: {
-      firstName: "",
-      lastName: "",
-      email: "",
-      phone: "",
-      country: "",
-      state: "",
-      zipCode: "",
+      firstName: customer?.firstName || "",
+      lastName: customer?.lastName || "",
+      email: customer?.email || "",
+      phone: customer?.phone || "",
+      country: customer?.country || "",
+      state: customer?.state || "",
+      zipCode: customer?.zipCode || "",
     },
   });
 
@@ -84,11 +86,31 @@ const LotteryPayPage = () => {
   }
 
   if (lotteryId === undefined || lottery === null) {
-    return <NotFound />;
+    return <NotFoundPage />;
   }
 
   return (
     <PageWrapper header={lottery.name} title="Almost there!">
+      <div className="flex flex-col gap-4 text-sm text-gray-600">
+        <div>
+          Cloverland provides a secure and transparent platform for users to
+          participate in lotteries, but we do not assume responsibility for any
+          loss or damages resulting from the misuse of our platform. We
+          encourage responsible gambling and advise our users to set a budget
+          and gamble only what they can afford to lose.
+        </div>
+        <div>
+          Please note that the laws and regulations regarding lotteries may vary
+          by country and state, and it is the user's responsibility to ensure
+          that they comply with these laws. Cloverland does not take
+          responsibility for any legal consequences that may arise from the use
+          of our platform.
+        </div>
+        <div>
+          By using Cloverland, you agree to these terms and acknowledge that the
+          use of our platform is at your own risk.
+        </div>
+      </div>
       <div className="flex w-full flex-wrap-reverse gap-4 sm:flex-nowrap">
         <form
           className="flex w-full flex-col gap-8"

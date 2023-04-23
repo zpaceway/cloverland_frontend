@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import LoadingScreen from "../../components/LoadingScreen";
 import { useNavigate, useParams } from "react-router-dom";
-import NotFound from "../../components/NotFound";
+import NotFoundPage from "../not-found/NotFound";
 import Order from "../../types/Order";
 import Button from "../../components/shared/Button";
 import axios from "../../lib/axios";
@@ -37,7 +37,7 @@ const OrderPage = () => {
   }
 
   if (order === null || orderId === undefined) {
-    return <NotFound />;
+    return <NotFoundPage />;
   }
 
   return (

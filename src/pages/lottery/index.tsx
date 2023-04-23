@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import Button from "../../components/shared/Button";
 import LoadingScreen from "../../components/LoadingScreen";
 import { useNavigate, useParams } from "react-router-dom";
-import NotFound from "../../components/NotFound";
+import NotFoundPage from "../not-found/NotFound";
 import Lottery from "../../types/Lottery";
 import { format } from "date-fns";
 import axios from "../../lib/axios";
@@ -36,11 +36,20 @@ const LotteryPage = () => {
   }
 
   if (lotteryId === undefined || lottery === null) {
-    return <NotFound />;
+    return <NotFoundPage />;
   }
 
   return (
     <PageWrapper header={lottery.name} title="Take a look at this lottery!">
+      <div className="flex flex-col gap-4 text-sm text-gray-600">
+        <div>
+          IMPORTANT! By using Cloverland, you acknowledge that you are an adult
+          under the laws of your country and that you have the legal capacity to
+          participate in lotteries. Cloverland does not condone or encourage
+          underage gambling, and we reserve the right to request proof of age
+          and identity from any user.
+        </div>
+      </div>
       <div className="flex flex-wrap text-6xl font-black">
         <div className="bg-black p-2 text-white">{lottery.name}</div>
         <div className="p-2"> Lottery</div>

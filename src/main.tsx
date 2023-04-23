@@ -10,7 +10,7 @@ import {
 } from "react-router-dom";
 import LoadingScreen from "./components/LoadingScreen";
 import AuthPage from "./pages/auth";
-import NotFound from "./components/NotFound";
+import NotFoundPage from "./pages/not-found/NotFound";
 import "react-toastify/dist/ReactToastify.css";
 import "./index.scss";
 import { ToastContainer } from "react-toastify";
@@ -98,11 +98,11 @@ const router = createBrowserRouter([
         path: "/auth",
         element: <AuthPage />,
       },
+      {
+        path: "*",
+        element: <NotFoundPage />,
+      },
     ],
-  },
-  {
-    path: "*",
-    element: <NotFound />,
   },
 ]);
 

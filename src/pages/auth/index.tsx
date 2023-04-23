@@ -47,7 +47,7 @@ const AuthPage = () => {
       >
         <div>
           Please, enter your email down bellow and we will send you a magic link
-          to login.
+          to sign in.
         </div>
         <TextField
           type="email"
