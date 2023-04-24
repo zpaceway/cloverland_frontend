@@ -2,70 +2,70 @@ import { useCallback, useEffect, useState } from "react";
 import LoadingScreen from "../../components/LoadingScreen";
 import { useNavigate, useParams } from "react-router-dom";
 import NotFoundPage from "../not-found/NotFound";
-import Order from "../../types/Order";
+import Ticket from "../../types/Ticket";
 import Button from "../../components/shared/Button";
 import axios from "../../lib/axios";
 import { toast } from "react-toastify";
 import { useAtom } from "jotai";
 import { pageWrapperDataAtom } from "../../atoms";
 
-type OrderPageParams = {
-  orderId: string;
+type TicketPageParams = {
+  ticketId: string;
 };
 
-const OrderPage = () => {
-  const [order, setOrder] = useState<Order | null | undefined>(undefined);
-  const { orderId } = useParams<OrderPageParams>();
+const TicketPage = () => {
+  const [ticket, setTicket] = useState<Ticket | null | undefined>(undefined);
+  const { ticketId } = useParams<TicketPageParams>();
   const navigate = useNavigate();
   const [isValidating, setIsValidating] = useState(false);
   const [, setPageWrapperData] = useAtom(pageWrapperDataAtom);
 
-  const getOrder = useCallback(() => {
+  const getTicket = useCallback(() => {
     axios
-      .get(`/api/order/${orderId}/`)
+      .get(`/api/ticket/${ticketId}/`)
       .then(({ data }) => {
-        setOrder(data);
+        setTicket(data);
       })
-      .catch(() => setOrder(null));
-  }, [setOrder]);
+      .catch(() => setTicket(null));
+  }, [setTicket]);
 
   useEffect(() => {
-    setOrder(undefined);
-    getOrder();
-  }, [setOrder, getOrder]);
+    setTicket(undefined);
+    getTicket();
+  }, [setTicket, getTicket]);
 
   useEffect(() => {
     setPageWrapperData({
-      header: `Order #${order?.id}` || "",
-      title: "Your order is ready!",
+      header: ticket?.id ? `Ticket #${ticket?.id}` : "",
+      title: "Your Ticket is ready!",
     });
-  }, [order]);
+  }, [ticket]);
 
-  if (order === undefined) {
+  if (ticket === undefined) {
     return <LoadingScreen />;
   }
 
-  if (order === null || orderId === undefined) {
+  if (ticket === null || ticketId === undefined) {
     return <NotFoundPage />;
   }
 
   return (
     <div className="flex w-full max-w-xl flex-col gap-4 border border-gray-300 bg-white p-4">
-      <div className="font-medium text-gray-900">Order #{order.id}</div>
+      <div className="font-medium text-gray-900">Order #{ticket.id}</div>
       <div className="flex flex-col gap-4 text-sm text-gray-600">
         <div>
           <div className="flex flex-col gap-4 text-sm text-gray-600">
-            {!order.paid ? (
+            {!ticket.paid ? (
               <div className="flex flex-col gap-4">
                 <div>
                   Thank you for your interest in participating in "
-                  {order.lottery.name}" lottery. To pay for your ticket you have
-                  to transfer{" "}
+                  {ticket.lottery.name}" lottery. To pay for your ticket you
+                  have to transfer{" "}
                   <b>
-                    {order.lottery.price} {order.lottery.symbol}
+                    {ticket.lottery.price} {ticket.lottery.symbol}
                   </b>{" "}
                   to the following address{" "}
-                  <b className="break-all">{order.address}</b>.
+                  <b className="break-all">{ticket.address}</b>.
                 </div>
                 <div>
                   Once the transaction is completed, please click on the
@@ -74,13 +74,13 @@ const OrderPage = () => {
               </div>
             ) : (
               <div>
-                You have successfully completed this order. Your ticket id is
-                the same as your order id, we wish you the best and really hope
-                you are the winner of the prize! There's nothing else to do
-                here, if you want another ticket you can click{" "}
+                You have successfully purchased this ticket. We wish you the
+                best and really hope you are the winner of the prize! There's
+                nothing else to do here, if you want another ticket you can
+                click{" "}
                 <span
                   className="text-blue-500"
-                  onClick={() => navigate(`/lottery/${order.lottery.id}/pay`)}
+                  onClick={() => navigate(`/lottery/${ticket.lottery.id}/pay`)}
                 >
                   here
                 </span>
@@ -91,24 +91,24 @@ const OrderPage = () => {
               onClick={() => {
                 setIsValidating(true);
                 axios
-                  .get(`/api/order/${order.id}/`)
+                  .get(`/api/ticket/${ticket.id}/`)
                   .then(({ data }) => {
                     if (!data.paid) {
                       return toast.error(
-                        "We were not able to validate your order yet. Please verify you transfer the right amount of coins to the address provided before clicking on validate."
+                        "We were not able to validate your ticket yet. Please verify you transfer the right amount of coins to the address provided before clicking on validate."
                       );
                     }
-                    return toast.success(
-                      "Order validated successfully, you will receive an email with the confirmation."
+                    toast.success(
+                      "Ticket validated successfully, you will receive an email with the confirmation."
                     );
-                    setOrder(data);
+                    setTicket(data);
                   })
                   .finally(() => setIsValidating(false));
               }}
-              disabled={order.paid}
+              disabled={ticket.paid}
               loading={isValidating}
             >
-              {order.paid ? "Paid" : "Validate"}
+              {ticket.paid ? "Paid" : "Validate"}
             </Button>
           </div>
         </div>
@@ -117,4 +117,4 @@ const OrderPage = () => {
   );
 };
 
-export default OrderPage;
+export default TicketPage;

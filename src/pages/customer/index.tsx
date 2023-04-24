@@ -14,8 +14,8 @@ const CustomerPage = () => {
 
   useEffect(() => {
     setPageWrapperData({
-      title: "Profile",
-      header: `Welcome${customer?.fullName ? `, ${customer.fullName}` : ""}`,
+      header: "Profile",
+      title: `Welcome${customer?.fullName ? `, ${customer.fullName}` : ""}`,
     });
   }, [customer]);
 
@@ -25,10 +25,10 @@ const CustomerPage = () => {
 
   return (
     <div className="flex w-full flex-col">
-      <div className="relative h-56 w-full bg-gradient-to-r from-emerald-300 to-emerald-400">
-        <div className="absolute left-4 top-[calc(100%_-_4rem)] h-32 w-32 rounded-full bg-white">
+      <div className="relative h-56 w-full bg-gradient-to-r from-gray-300 to-zinc-400">
+        <div className="absolute left-4 top-[calc(100%_-_4rem)] h-32 w-32 rounded-full">
           <img
-            src="/user-circle.svg"
+            src={`/${customer.picture}`}
             className="h-full w-full rounded-full shadow-md"
             alt=""
           />
@@ -68,41 +68,41 @@ const CustomerPage = () => {
                 </tr>
               </thead>
               <tbody>
-                {customer.orders.map((order) => (
-                  <tr key={order.id} className="border-b bg-white">
+                {customer.tickets.map((ticket) => (
+                  <tr key={ticket.id} className="border-b bg-white">
                     <th
                       scope="row"
                       className="whitespace-nowrap px-6 py-4 font-medium text-gray-900"
                     >
-                      {order.id}
+                      {ticket.id}
                     </th>
                     <td scope="row" className="whitespace-nowrap px-6 py-4">
                       <a
-                        href={`/lottery/${order.lottery.id}`}
+                        href={`/lottery/${ticket.lottery.id}`}
                         className="text-blue-500 underline"
                       >
-                        {order.lottery.name}
+                        {ticket.lottery.name}
                       </a>
                     </td>
                     <td className="px-6 py-4">
                       <a
-                        href={order.walletAddressLink}
+                        href={ticket.walletAddressLink}
                         className="text-blue-500 underline"
                         target="_blank"
                       >
-                        {order.address.substring(0, 8)}...
+                        {ticket.address.substring(0, 8)}...
                       </a>
                     </td>
                     <td className="px-6 py-4">
-                      {format(new Date(order.createdAt), "yyyy-MM-dd")}
+                      {format(new Date(ticket.createdAt), "yyyy-MM-dd")}
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex whitespace-nowrap">
                         <Button
-                          disabled={order.paid}
-                          onClick={() => navigate(`/order/${order.id}`)}
+                          disabled={ticket.paid}
+                          onClick={() => navigate(`/ticket/${ticket.id}`)}
                         >
-                          {order.paid ? "Paid" : "Pay"}
+                          {ticket.paid ? "Paid" : "Pay"}
                         </Button>
                       </div>
                     </td>

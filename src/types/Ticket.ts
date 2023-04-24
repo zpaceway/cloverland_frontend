@@ -1,7 +1,7 @@
 import Customer from "./Customer";
 import Lottery from "./Lottery";
 
-type Order = {
+type Ticket = {
   id: string;
   address: string;
   paid: boolean;
@@ -12,4 +12,4 @@ type Order = {
   walletAddressLink: string;
 };
 
-export default Order;
+export default Ticket;

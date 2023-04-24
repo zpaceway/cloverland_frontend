@@ -18,7 +18,7 @@ import axios from "./lib/axios";
 import { useCustomer } from "./hooks";
 import HomePage from "./pages/home";
 import LotteryPage from "./pages/lottery";
-import OrderPage from "./pages/order";
+import TicketPage from "./pages/ticket";
 import Debouncer from "./utils/Debouncer";
 import PageWrapper from "./components/shared/PageWrapper";
 
@@ -48,6 +48,9 @@ const App = () => {
             customerId,
             customerSecret,
           });
+          if (!data.picture) {
+            data.picture = `user-${(Math.random() * 10 + 1).toFixed(0)}.svg`;
+          }
           setCustomer(data);
         })
         .catch(() => setCustomer(null));
@@ -104,8 +107,8 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: "/order/:orderId",
-        element: <OrderPage />,
+        path: "/ticket/:ticketId",
+        element: <TicketPage />,
       },
       {
         path: "/customer",

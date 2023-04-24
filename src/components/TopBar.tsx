@@ -30,7 +30,7 @@ const TopBar = ({ header }: TopBarProps) => {
               onClick={() => navigate("/customer")}
             >
               <img
-                src="/user-circle.svg"
+                src={`/${customer.picture}`}
                 className="h-full w-full object-contain"
               />
             </div>

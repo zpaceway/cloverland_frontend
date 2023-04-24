@@ -1,8 +1,9 @@
-import Order from "./Order";
+import Ticket from "./Ticket";
 
 type Customer = {
   id: string;
   firstName: string;
+  picture?: string;
   lastName: string;
   fullName: string;
   email: string;
@@ -12,7 +13,7 @@ type Customer = {
   zipCode: string;
   createdAt: string;
   updatedAt: string;
-  orders: Order[];
+  tickets: Ticket[];
 };
 
 export default Customer;

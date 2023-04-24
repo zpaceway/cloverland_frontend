@@ -77,16 +77,16 @@ const LotteryPayPage = () => {
   const onSubmit: SubmitHandler<CheckoutSchemaType> = useCallback(
     async (data) => {
       const {
-        data: { order, credentials },
-      } = await axios.post(`/api/order/`, {
+        data: { ticket, credentials },
+      } = await axios.post(`/api/ticket/`, {
         lotteryId,
         customerInfo: data,
       });
-      let orderPageUrl = `/order/${order.id}`;
+      let ticketPageUrl = `/ticket/${ticket.id}`;
       if (credentials.id && credentials.secret && !customer) {
-        orderPageUrl = `${orderPageUrl}/?customerId=${credentials.id}&customerSecret=${credentials.secret}`;
+        ticketPageUrl = `${ticketPageUrl}/?customerId=${credentials.id}&customerSecret=${credentials.secret}`;
       }
-      navigate(orderPageUrl);
+      navigate(ticketPageUrl);
     },
     [lotteryId]
   );
@@ -520,7 +520,7 @@ const LotteryPayPage = () => {
               />
             </div>
           </div>
-          <Button loading={isSubmitting}>Place Order</Button>
+          <Button loading={isSubmitting}>Get a Ticket</Button>
         </form>
         <div className="flex w-full max-w-full flex-col justify-between gap-4 border border-gray-300 bg-white p-4 sm:max-w-xs">
           <div className="flex flex-col gap-4">
@@ -528,7 +528,7 @@ const LotteryPayPage = () => {
               <div>
                 <AiOutlineShoppingCart />
               </div>
-              <div>Order details</div>
+              <div>Ticket details</div>
             </div>
             <div className="flex flex-col gap-4 text-sm">
               <div className="flex justify-between gap-4">
