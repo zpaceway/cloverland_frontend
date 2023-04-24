@@ -20,6 +20,7 @@ import HomePage from "./pages/home";
 import LotteryPage from "./pages/lottery";
 import OrderPage from "./pages/order";
 import Debouncer from "./utils/Debouncer";
+import PageWrapper from "./components/shared/PageWrapper";
 
 const App = () => {
   const { customer, setCustomer, credentials, setCredentials } = useCustomer();
@@ -72,7 +73,11 @@ const App = () => {
     return <LoadingScreen />;
   }
 
-  return <Outlet />;
+  return (
+    <PageWrapper>
+      <Outlet />
+    </PageWrapper>
+  );
 };
 
 const router = createBrowserRouter([

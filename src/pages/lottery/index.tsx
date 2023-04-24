@@ -6,7 +6,8 @@ import NotFoundPage from "../not-found/NotFound";
 import Lottery from "../../types/Lottery";
 import { format } from "date-fns";
 import axios from "../../lib/axios";
-import PageWrapper from "../../components/shared/PageWrapper";
+import { useAtom } from "jotai";
+import { lotteriesAtom, pageWrapperDataAtom } from "../../atoms";
 
 type LotteryPageParams = {
   lotteryId: string;
@@ -16,20 +17,34 @@ const LotteryPage = () => {
   const { lotteryId } = useParams<LotteryPageParams>();
   const navigate = useNavigate();
   const [lottery, setLottery] = useState<Lottery | undefined | null>(undefined);
+  const [lotteries] = useAtom(lotteriesAtom);
+  const [, setPageWrapperData] = useAtom(pageWrapperDataAtom);
 
   const getLottery = useCallback(() => {
+    const lottery = lotteries?.find((lottery) => lottery.id == lotteryId);
+    if (lottery) {
+      setLottery(lottery);
+      return;
+    }
     axios
       .get(`/api/lottery/${lotteryId}/`)
       .then(({ data }) => {
         setLottery(data);
       })
       .catch(() => setLottery(null));
-  }, [lotteryId, setLottery]);
+  }, [lotteryId, lotteries, setLottery]);
 
   useEffect(() => {
     setLottery(undefined);
     getLottery();
   }, [setLottery, getLottery]);
+
+  useEffect(() => {
+    setPageWrapperData({
+      header: lottery?.name || "",
+      title: "Take a look at this lottery!",
+    });
+  }, [lottery]);
 
   if (lottery === undefined) {
     return <LoadingScreen />;
@@ -40,14 +55,14 @@ const LotteryPage = () => {
   }
 
   return (
-    <PageWrapper header={lottery.name} title="Take a look at this lottery!">
-      <div className="mb-8 flex flex-col gap-4 text-sm text-gray-600">
+    <div className="flex flex-col gap-8">
+      <div className="flex flex-col gap-4 text-sm text-gray-600">
         Cloverland offers a secure and transparent platform for lotteries, but
         we don't take responsibility for any losses. We promote responsible
         gambling and advise users to comply with applicable laws. Using
         Cloverland is at your own risk, and you agree to these terms.
       </div>
-      <div className="mb-8 flex flex-wrap text-6xl font-black">
+      <div className="flex flex-wrap text-6xl font-black">
         <div className="bg-black p-2 text-white">{lottery.name}</div>
         <div className="p-2"> Lottery</div>
       </div>
@@ -84,7 +99,7 @@ const LotteryPage = () => {
           </div>
         </div>
       </div>
-    </PageWrapper>
+    </div>
   );
 };
 

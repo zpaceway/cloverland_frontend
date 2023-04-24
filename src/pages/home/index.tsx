@@ -1,13 +1,14 @@
-import { useEffect, useState } from "react";
-import PageWrapper from "../../components/shared/PageWrapper";
-import Lottery from "../../types/Lottery";
+import { useEffect } from "react";
 import axios from "../../lib/axios";
 import LoadingScreen from "../../components/LoadingScreen";
 import { format } from "date-fns";
 import Link from "../../components/shared/Link";
+import { useAtom } from "jotai";
+import { lotteriesAtom, pageWrapperDataAtom } from "../../atoms";
 
 const HomePage = () => {
-  const [lotteries, setLotteries] = useState<Lottery[] | undefined>(undefined);
+  const [lotteries, setLotteries] = useAtom(lotteriesAtom);
+  const [, setPageWrapperData] = useAtom(pageWrapperDataAtom);
 
   useEffect(() => {
     axios
@@ -15,13 +16,20 @@ const HomePage = () => {
       .then(({ data: { results: lotteries } }) => setLotteries(lotteries));
   }, []);
 
+  useEffect(() => {
+    setPageWrapperData({
+      header: "Home",
+      title: "Welcome to cloverland",
+    });
+  }, []);
+
   if (lotteries === undefined) {
     return <LoadingScreen />;
   }
 
   return (
-    <PageWrapper header="Home" title="Welcome to cloverland!">
-      <div className="mb-8 flex flex-col gap-4 text-sm text-gray-600">
+    <div className="flex flex-col gap-8">
+      <div className="flex flex-col gap-4 text-sm text-gray-600">
         Cloverland is a blockchain lottery app that offers a secure and
         transparent platform for users to participate in lotteries. Transactions
         are recorded on the blockchain network, ensuring a fair process.
@@ -62,10 +70,10 @@ const HomePage = () => {
                     >
                       {lottery.name}
                     </th>
-                    <td className="px-6 py-4">
+                    <td className="whitespace-nowrap px-6 py-4">
                       {lottery.price} {lottery.symbol}
                     </td>
-                    <td className="px-6 py-4">
+                    <td className="whitespace-nowrap px-6 py-4">
                       <a
                         href={lottery.walletAddressLink}
                         className="text-blue-500 underline"
@@ -74,13 +82,13 @@ const HomePage = () => {
                         {lottery.address.substring(0, 8)}...
                       </a>
                     </td>
-                    <td className="px-6 py-4">
+                    <td className="whitespace-nowrap px-6 py-4">
                       {format(new Date(lottery.createdAt), "yyyy-MM-dd")}
                     </td>
-                    <td className="px-6 py-4">
+                    <td className="whitespace-nowrap px-6 py-4">
                       {format(new Date(lottery.endsAt), "yyyy-MM-dd")}
                     </td>
-                    <td className="px-6 py-4">
+                    <td className="whitespace-nowrap px-6 py-4">
                       <div className="flex whitespace-nowrap">
                         <Link to={`/lottery/${lottery.id}`}>Get a Ticket</Link>
                       </div>
@@ -92,7 +100,7 @@ const HomePage = () => {
           </div>
         </div>
       </div>
-    </PageWrapper>
+    </div>
   );
 };
 

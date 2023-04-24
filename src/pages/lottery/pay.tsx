@@ -14,8 +14,9 @@ import NotFoundPage from "../not-found/NotFound";
 import Lottery from "../../types/Lottery";
 import { z } from "zod";
 import axios from "../../lib/axios";
-import PageWrapper from "../../components/shared/PageWrapper";
 import { useCustomer } from "../../hooks";
+import { useAtom } from "jotai";
+import { lotteriesAtom, pageWrapperDataAtom } from "../../atoms";
 
 const checkoutSchema = z.object({
   firstName: z.string().min(1, { message: "Please, input your first name." }),
@@ -38,15 +39,23 @@ const LotteryPayPage = () => {
   const navigate = useNavigate();
   const { customer } = useCustomer();
   const [lottery, setLottery] = useState<Lottery | undefined | null>(undefined);
+  const [lotteries] = useAtom(lotteriesAtom);
+
+  const [, setPageWrapperData] = useAtom(pageWrapperDataAtom);
 
   const getLottery = useCallback(() => {
+    const lottery = lotteries?.find((lottery) => lottery.id == lotteryId);
+    if (lottery) {
+      setLottery(lottery);
+      return;
+    }
     axios
       .get(`/api/lottery/${lotteryId}/`)
       .then(({ data }) => {
         setLottery(data);
       })
       .catch(() => setLottery(null));
-  }, [lotteryId, setLottery]);
+  }, [lotteryId, lotteries, setLottery]);
 
   const {
     register,
@@ -67,14 +76,27 @@ const LotteryPayPage = () => {
 
   const onSubmit: SubmitHandler<CheckoutSchemaType> = useCallback(
     async (data) => {
-      const { data: order } = await axios.post(`/api/order/`, {
+      const {
+        data: { order, credentials },
+      } = await axios.post(`/api/order/`, {
         lotteryId,
         customerInfo: data,
       });
-      navigate(`/order/${order.id}`);
+      let orderPageUrl = `/order/${order.id}`;
+      if (credentials.id && credentials.secret && !customer) {
+        orderPageUrl = `${orderPageUrl}/?customerId=${credentials.id}&customerSecret=${credentials.secret}`;
+      }
+      navigate(orderPageUrl);
     },
     [lotteryId]
   );
+
+  useEffect(() => {
+    setPageWrapperData({
+      header: lottery?.name || "",
+      title: "Take a look at this lottery!",
+    });
+  }, [lottery]);
 
   useEffect(() => {
     setLottery(undefined);
@@ -90,8 +112,8 @@ const LotteryPayPage = () => {
   }
 
   return (
-    <PageWrapper header={lottery.name} title="Almost there!">
-      <div className="mb-8 flex flex-col gap-4 text-sm text-gray-600">
+    <div className="flex flex-col gap-8">
+      <div className="flex flex-col gap-4 text-sm text-gray-600">
         By purchasing a lottery ticket on Cloverland, you acknowledge and agree
         to the terms and conditions outlined by the platform. This includes
         accepting responsibility for any risks or consequences that may arise
@@ -111,6 +133,7 @@ const LotteryPayPage = () => {
                 <div className="w-full">
                   <TextField
                     label="First Name"
+                    disabled={!!customer}
                     {...register("firstName")}
                     errorMessage={errors.firstName?.message}
                   />
@@ -118,6 +141,7 @@ const LotteryPayPage = () => {
                 <div className="w-full">
                   <TextField
                     label="Last Name"
+                    disabled={!!customer}
                     {...register("lastName")}
                     errorMessage={errors.lastName?.message}
                   />
@@ -127,6 +151,7 @@ const LotteryPayPage = () => {
                 <div className="w-full">
                   <TextField
                     label="Email"
+                    disabled={!!customer}
                     {...register("email")}
                     errorMessage={errors.email?.message}
                   />
@@ -134,6 +159,7 @@ const LotteryPayPage = () => {
                 <div className="w-full">
                   <TextField
                     label="Phone"
+                    disabled={!!customer}
                     placeholder="+"
                     {...register("phone")}
                     errorMessage={errors.email?.message}
@@ -142,6 +168,7 @@ const LotteryPayPage = () => {
               </div>
               <Select
                 label="Country"
+                disabled={!!customer}
                 {...register("country")}
                 errorMessage={errors.country?.message}
               >
@@ -460,6 +487,7 @@ const LotteryPayPage = () => {
                   <TextField
                     label="State"
                     {...register("state")}
+                    disabled={!!customer}
                     errorMessage={errors.state?.message}
                   />
                 </div>
@@ -467,6 +495,7 @@ const LotteryPayPage = () => {
                   <TextField
                     label="Zip Code"
                     {...register("zipCode")}
+                    disabled={!!customer}
                     errorMessage={errors.zipCode?.message}
                   />
                 </div>
@@ -529,7 +558,7 @@ const LotteryPayPage = () => {
           </div>
         </div>
       </div>
-    </PageWrapper>
+    </div>
   );
 };
 
