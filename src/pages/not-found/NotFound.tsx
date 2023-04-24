@@ -10,7 +10,7 @@ const NotFoundPage = () => {
       header: "Not found",
       title: "Sorry, this is awkward 😕.",
     });
-  }, []);
+  }, [setPageWrapperData]);
 
   return (
     <div className="mb-8 max-w-sm bg-white p-4 text-gray-900">

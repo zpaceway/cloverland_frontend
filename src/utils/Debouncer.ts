@@ -1,8 +1,8 @@
 class Debouncer {
-  timeout: number = 0;
-  delay: number = 500;
+  timeout = 0;
+  delay = 200;
 
-  constructor({ delay }: { delay: number } = { delay: 500 }) {
+  constructor({ delay }: { delay: number } = { delay: 200 }) {
     this.delay = delay;
   }
 

@@ -46,7 +46,7 @@ const AuthPage = () => {
       title: "Magic Link Authentication",
       header: "Auth",
     });
-  }, []);
+  }, [setPageWrapperData]);
 
   return (
     <form

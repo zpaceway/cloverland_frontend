@@ -27,7 +27,7 @@ const TicketPage = () => {
         setTicket(data);
       })
       .catch(() => setTicket(null));
-  }, [setTicket]);
+  }, [ticketId, setTicket]);
 
   useEffect(() => {
     setTicket(undefined);
@@ -39,7 +39,7 @@ const TicketPage = () => {
       header: ticket?.id ? `Ticket #${ticket?.id}` : "",
       title: "Your Ticket is ready!",
     });
-  }, [ticket]);
+  }, [ticket, setPageWrapperData]);
 
   if (ticket === undefined) {
     return <LoadingScreen />;
@@ -58,9 +58,9 @@ const TicketPage = () => {
             {!ticket.paid ? (
               <div className="flex flex-col gap-4">
                 <div>
-                  Thank you for your interest in participating in "
-                  {ticket.lottery.name}" lottery. To pay for your ticket you
-                  have to transfer{" "}
+                  Thank you for your interest in participating in {'"'}
+                  {ticket.lottery.name}
+                  {'"'} lottery. To pay for your ticket you have to transfer{" "}
                   <b>
                     {ticket.lottery.price} {ticket.lottery.symbol}
                   </b>{" "}
@@ -75,12 +75,13 @@ const TicketPage = () => {
             ) : (
               <div>
                 You have successfully purchased this ticket. We wish you the
-                best and really hope you are the winner of the prize! There's
+                best and really hope you are the winner of the prize!{" "}
+                {"There's"}
                 nothing else to do here, if you want another ticket you can
                 click{" "}
                 <span
                   className="text-blue-500"
-                  onClick={() => navigate(`/lottery/${ticket.lottery.id}/pay`)}
+                  onClick={() => navigate(`/lottery/${ticket.lottery.id}`)}
                 >
                   here
                 </span>

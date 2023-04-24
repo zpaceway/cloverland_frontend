@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useRef } from "react";
 import ReactDOM from "react-dom/client";
-import PayLottery from "./pages/lottery/pay";
 import CustomerPage from "./pages/customer";
 import {
   createBrowserRouter,
@@ -25,7 +24,7 @@ import PageWrapper from "./components/shared/PageWrapper";
 const App = () => {
   const { customer, setCustomer, credentials, setCredentials } = useCustomer();
   const [searchParams, setSearchParams] = useSearchParams();
-  const debouncer = useRef(new Debouncer({ delay: 300 }));
+  const debouncerRef = useRef(new Debouncer());
 
   const getCustomer = useCallback(() => {
     const customerId = searchParams.get("customerId") || credentials.customerId;
@@ -40,7 +39,7 @@ const App = () => {
       return;
     }
 
-    debouncer.current.exec(() => {
+    debouncerRef.current.exec(() => {
       axios
         .get(`/api/customer/${customerId}/${customerSecret}/`)
         .then(({ data }) => {
@@ -55,7 +54,14 @@ const App = () => {
         })
         .catch(() => setCustomer(null));
     });
-  }, [customer, searchParams, setCustomer]);
+  }, [
+    customer,
+    searchParams,
+    setCustomer,
+    credentials.customerId,
+    credentials.customerSecret,
+    setCredentials,
+  ]);
 
   useEffect(() => {
     getCustomer();
@@ -70,7 +76,7 @@ const App = () => {
     searchParams.delete("customerId");
     searchParams.delete("customerSecret");
     setSearchParams(new URLSearchParams(searchParams));
-  }, [customer]);
+  }, [customer, searchParams, setSearchParams]);
 
   if (customer === undefined) {
     return <LoadingScreen />;
@@ -99,10 +105,6 @@ const router = createBrowserRouter([
           {
             path: "",
             element: <LotteryPage />,
-          },
-          {
-            path: "pay",
-            element: <PayLottery />,
           },
         ],
       },

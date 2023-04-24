@@ -26,15 +26,20 @@ const CustomerPage = () => {
         }
         setCustomer(data);
       })
-      .catch(() => {});
-  }, []);
+      .catch(console.error);
+  }, [
+    credentials.customerId,
+    credentials.customerSecret,
+    customer?.picture,
+    setCustomer,
+  ]);
 
   useEffect(() => {
     setPageWrapperData({
       header: "Profile",
       title: `Welcome${customer?.fullName ? `, ${customer.fullName}` : ""}`,
     });
-  }, [customer]);
+  }, [customer, setPageWrapperData]);
 
   if (!customer) {
     return <AuthPage />;
@@ -105,6 +110,7 @@ const CustomerPage = () => {
                       <a
                         href={ticket.walletAddressLink}
                         className="text-blue-500 underline"
+                        rel="noreferrer"
                         target="_blank"
                       >
                         {ticket.address.substring(0, 8)}...

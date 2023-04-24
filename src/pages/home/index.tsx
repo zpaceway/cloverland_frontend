@@ -1,27 +1,31 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import axios from "../../lib/axios";
 import LoadingScreen from "../../components/LoadingScreen";
 import { format } from "date-fns";
 import Link from "../../components/shared/Link";
 import { useAtom } from "jotai";
 import { lotteriesAtom, pageWrapperDataAtom } from "../../atoms";
+import Debouncer from "../../utils/Debouncer";
 
 const HomePage = () => {
   const [lotteries, setLotteries] = useAtom(lotteriesAtom);
   const [, setPageWrapperData] = useAtom(pageWrapperDataAtom);
+  const debouncerRef = useRef(new Debouncer());
 
   useEffect(() => {
-    axios
-      .get("/api/lottery/")
-      .then(({ data: { results: lotteries } }) => setLotteries(lotteries));
-  }, []);
+    debouncerRef.current.exec(() => {
+      axios
+        .get("/api/lottery/")
+        .then(({ data: { results: lotteries } }) => setLotteries(lotteries));
+    });
+  }, [setLotteries]);
 
   useEffect(() => {
     setPageWrapperData({
       header: "Home",
       title: "Welcome to cloverland",
     });
-  }, []);
+  }, [setPageWrapperData]);
 
   if (lotteries === undefined) {
     return <LoadingScreen />;
@@ -76,6 +80,7 @@ const HomePage = () => {
                     <td className="whitespace-nowrap px-6 py-4">
                       <a
                         href={lottery.walletAddressLink}
+                        rel="noreferrer"
                         className="text-blue-500 underline"
                         target="_blank"
                       >
