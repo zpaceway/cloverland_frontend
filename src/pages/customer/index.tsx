@@ -6,11 +6,28 @@ import { useNavigate } from "react-router-dom";
 import { useAtom } from "jotai";
 import { pageWrapperDataAtom } from "../../atoms";
 import { useEffect } from "react";
+import axios from "../../lib/axios";
 
 const CustomerPage = () => {
-  const { customer, signOut } = useCustomer();
+  const { customer, signOut, setCustomer, credentials } = useCustomer();
   const navigate = useNavigate();
   const [, setPageWrapperData] = useAtom(pageWrapperDataAtom);
+
+  useEffect(() => {
+    axios
+      .get(
+        `/api/customer/${credentials.customerId}/${credentials.customerSecret}/`
+      )
+      .then(({ data }) => {
+        if (!data.picture) {
+          data.picture =
+            customer?.picture ||
+            `user-${(Math.random() * 10 + 1).toFixed(0)}.svg`;
+        }
+        setCustomer(data);
+      })
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
     setPageWrapperData({
