@@ -47,7 +47,7 @@ const CustomerPage = () => {
 
   return (
     <div className="flex w-full flex-col">
-      <div className="relative h-56 w-full bg-gradient-to-r from-gray-300 to-zinc-400">
+      <div className="relative h-56 w-full bg-gradient-to-r from-slate-400 to-slate-500">
         <div className="absolute left-4 top-[calc(100%_-_4rem)] h-32 w-32 rounded-full">
           <img
             src={`/${customer.picture}`}
@@ -106,7 +106,7 @@ const CustomerPage = () => {
                         {ticket.lottery.name}
                       </a>
                     </td>
-                    <td className="px-6 py-4">
+                    <td className="whitespace-nowrap px-6 py-4">
                       <a
                         href={ticket.walletAddressLink}
                         className="text-blue-500 underline"
@@ -116,8 +116,8 @@ const CustomerPage = () => {
                         {ticket.address.substring(0, 8)}...
                       </a>
                     </td>
-                    <td className="px-6 py-4">
-                      {format(new Date(ticket.createdAt), "yyyy-MM-dd")}
+                    <td className="whitespace-nowrap px-6 py-4">
+                      {format(new Date(ticket.createdAt), "yyyy-MM-dd, p")}
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex whitespace-nowrap">

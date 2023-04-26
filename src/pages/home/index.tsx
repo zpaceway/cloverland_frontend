@@ -43,6 +43,9 @@ const HomePage = () => {
       </div>
 
       <div className="flex w-full flex-col gap-4">
+        <div className="pt-8 text-lg font-black text-gray-600">
+          Currently active lotteries
+        </div>
         <div className="w-full overflow-x-auto">
           <div className="table w-full overflow-x-auto">
             <table className="w-full text-left text-sm text-gray-500">
@@ -63,7 +66,6 @@ const HomePage = () => {
                   <th scope="col" className="whitespace-nowrap px-6 py-3">
                     Ends At
                   </th>
-                  <th scope="col" className="whitespace-nowrap px-6 py-3"></th>
                 </tr>
               </thead>
               <tbody>
@@ -71,9 +73,9 @@ const HomePage = () => {
                   <tr key={lottery.id} className="border-b bg-white">
                     <th
                       scope="row"
-                      className="whitespace-nowrap px-6 py-4 font-medium text-gray-900"
+                      className="whitespace-nowrap px-6 py-4 text-center font-medium text-gray-900"
                     >
-                      {lottery.name}
+                      <Link to={`/lottery/${lottery.id}`}>{lottery.name}</Link>
                     </th>
                     <td className="whitespace-nowrap px-6 py-4">
                       {lottery.price} {lottery.symbol}
@@ -89,15 +91,73 @@ const HomePage = () => {
                       </a>
                     </td>
                     <td className="whitespace-nowrap px-6 py-4">
-                      {format(new Date(lottery.createdAt), "yyyy-MM-dd")}
+                      {format(new Date(lottery.createdAt), "yyyy-MM-dd, p")}
                     </td>
                     <td className="whitespace-nowrap px-6 py-4">
-                      {format(new Date(lottery.endsAt), "yyyy-MM-dd")}
+                      {format(new Date(lottery.endsAt), "yyyy-MM-dd, p")}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <Paginator />
+      </div>
+
+      <div className="flex w-full flex-col gap-4">
+        <div className="pt-8 text-lg font-black text-gray-600">
+          Previous past lotteries
+        </div>
+        <div className="w-full overflow-x-auto">
+          <div className="table w-full overflow-x-auto">
+            <table className="w-full text-left text-sm text-gray-500">
+              <thead className="bg-gray-50 text-xs uppercase text-gray-700">
+                <tr>
+                  <th scope="col" className="whitespace-nowrap px-6 py-3">
+                    Lottery
+                  </th>
+                  <th scope="col" className="whitespace-nowrap px-6 py-3">
+                    Price
+                  </th>
+                  <th scope="col" className="whitespace-nowrap px-6 py-3">
+                    Address
+                  </th>
+                  <th scope="col" className="whitespace-nowrap px-6 py-3">
+                    Created At
+                  </th>
+                  <th scope="col" className="whitespace-nowrap px-6 py-3">
+                    Ends At
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {lotteries.map((lottery) => (
+                  <tr key={lottery.id} className="border-b bg-white">
+                    <th
+                      scope="row"
+                      className="whitespace-nowrap px-6 py-4 text-center font-medium text-gray-900"
+                    >
+                      <Link to={`/lottery/${lottery.id}`}>{lottery.name}</Link>
+                    </th>
+                    <td className="whitespace-nowrap px-6 py-4">
+                      {lottery.price} {lottery.symbol}
                     </td>
                     <td className="whitespace-nowrap px-6 py-4">
-                      <div className="flex whitespace-nowrap">
-                        <Link to={`/lottery/${lottery.id}`}>Get a Ticket</Link>
-                      </div>
+                      <a
+                        href={lottery.walletAddressLink}
+                        rel="noreferrer"
+                        className="text-blue-500 underline"
+                        target="_blank"
+                      >
+                        {lottery.address.substring(0, 8)}...
+                      </a>
+                    </td>
+                    <td className="whitespace-nowrap px-6 py-4">
+                      {format(new Date(lottery.createdAt), "yyyy-MM-dd, p")}
+                    </td>
+                    <td className="whitespace-nowrap px-6 py-4">
+                      {format(new Date(lottery.endsAt), "yyyy-MM-dd, p")}
                     </td>
                   </tr>
                 ))}
