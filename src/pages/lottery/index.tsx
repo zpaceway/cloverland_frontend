@@ -520,7 +520,7 @@ const LotteryPage = () => {
               />
             </div>
           </div>
-          <Button loading={isSubmitting}>Get a Ticket</Button>
+          <Button loading={isSubmitting}>Submit</Button>
         </form>
         <div className="flex w-full max-w-full flex-col justify-between gap-4 border border-gray-300 bg-white p-4 sm:max-w-xs">
           <div className="flex flex-col gap-4">

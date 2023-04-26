@@ -51,7 +51,7 @@ const AuthPage = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex max-w-xs flex-col gap-4"
+      className="flex max-w-lg flex-col gap-4"
     >
       <div>
         Please, enter your email down bellow and we will send you a magic link

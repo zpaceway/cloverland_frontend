@@ -6,6 +6,7 @@ import Link from "../../components/shared/Link";
 import { useAtom } from "jotai";
 import { lotteriesAtom, pageWrapperDataAtom } from "../../atoms";
 import Debouncer from "../../utils/Debouncer";
+import Paginator from "../../components/shared/Paginator";
 
 const HomePage = () => {
   const [lotteries, setLotteries] = useAtom(lotteriesAtom);
@@ -41,7 +42,7 @@ const HomePage = () => {
         for maintenance.
       </div>
 
-      <div className="w-full">
+      <div className="flex w-full flex-col gap-4">
         <div className="w-full overflow-x-auto">
           <div className="table w-full overflow-x-auto">
             <table className="w-full text-left text-sm text-gray-500">
@@ -104,6 +105,7 @@ const HomePage = () => {
             </table>
           </div>
         </div>
+        <Paginator />
       </div>
     </div>
   );
